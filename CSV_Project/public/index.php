@@ -20,21 +20,28 @@ class main {
 }
 
 class csv {
-
-    static public function getRecords($filename) {
-
+    static public function getRecords($filename){
         $file = fopen($filename,"r");
+
+        $fieldNames = array();
+
+        $count = 0;
 
         while(! feof($file))
         {
             $record = fgetcsv($file);
-            $records[] = $record;
+            if($count == 0) {
+                $fieldNames = $record;
+            } else {
+                $records[] = recordFactory::create($fieldNames, $record); //make array
+            }
+            $count++;
         }
 
         fclose($file);
-        print_r($records);
-
+        return $records;
     }
+
 }
 
 class record {
@@ -72,18 +79,31 @@ class recordFactory {
     }
 }
 
+class html { // Work on this for the project
+    //go back to array function called getKey, get an array and store them for you
+    //Reflection: querying your oject in your code
+    //Use reflection library
+    public static function generateTable($records){
 
+        $count = 0;
+        foreach ($records as $record) {
+            if($count==0) {
+                $array = $record->returnArray();
+                $fields = array_keys($array);
+                $values =array_values($array);
+                print_r($fields);
+                print_r($values);
+            } else {
+                $array = $record->returnArray();
+                $values =array_values($array);
+                print_r($values);
+            }
+            $count++;
 
+        }
+    }
+}
 
-//class html {
-//
-//    static public function generateTable($records) {
-//
-//        $table = $records;
-//        return $table;
-//    }
-//}
-//
 //class system {
 //
 //    static public function printPage($page) {
