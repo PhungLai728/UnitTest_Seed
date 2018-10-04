@@ -6,13 +6,24 @@
  * Time: 5:53 AM
  */
 
-main::start();
+main::start("example.csv");
 
 class main {
 
-    static public function start() {
+    static public function start($filename) {
 
-        $file = fopen("example.csv","r");
+        $records = csv::getRecords($filename);
+//        $table = html::generateTable($records);
+//        system::printPage($table);
+    }
+
+}
+
+class csv {
+
+    static public function getRecords($filename) {
+
+        $file = fopen($filename,"r");
 
         while(! feof($file))
         {
@@ -23,22 +34,9 @@ class main {
         fclose($file);
         print_r($records);
 
-
-
-//        $records = csv::getRecords();
-//        $table = html::generateTable($records);
-//        system::printPage($table);
     }
-
 }
-//
-//class csv {
-//
-//    static public function getRecords() {
-//
-//    }
-//}
-//
+
 //class html {
 //
 //    static public function generateTable($records) {
