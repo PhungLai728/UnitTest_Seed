@@ -10,15 +10,49 @@ main::start();
 
 class main {
 
-    public static function start() {
-        $records = csv::getRecords();
+    static public function start() {
+
+        $file = fopen("example.csv","r");
+
+        while(! feof($file))
+        {
+            $record = fgetcsv($file);
+            $records[] = $record;
+        }
+
+        fclose($file);
+        print_r($records);
+
+
+
+//        $records = csv::getRecords();
+//        $table = html::generateTable($records);
+//        system::printPage($table);
     }
 
 }
-
-class csv{}
-
-class html {}
-
-class system {}
-
+//
+//class csv {
+//
+//    static public function getRecords() {
+//
+//    }
+//}
+//
+//class html {
+//
+//    static public function generateTable($records) {
+//
+//        $table = $records;
+//        return $table;
+//    }
+//}
+//
+//class system {
+//
+//    static public function printPage($page) {
+//
+//        echo $page;
+//    }
+//}
+//
