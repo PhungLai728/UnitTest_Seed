@@ -8,15 +8,13 @@
 
 main::start("example.csv");
 
-class main {
-
+class main{
     static public function start($filename) {
 
         $records = csv::getRecords($filename);
-//        $table = html::generateTable($records);
-//        system::printPage($table);
-    }
+        $table = html::generateTable($records);
 
+    }
 }
 
 class csv {
@@ -50,8 +48,6 @@ class record {
     {
 
         $record = array_combine($fieldNames, $values);
-//        $record = (object) $record; //record passes to function object, and function sends it over record
-
         foreach ($record as $property => $value) {
             $this->createProperty($property, $value);
         }
@@ -79,10 +75,8 @@ class recordFactory {
     }
 }
 
-class html { // Work on this for the project
-    //go back to array function called getKey, get an array and store them for you
-    //Reflection: querying your oject in your code
-    //Use reflection library
+class html {
+
     public static function generateTable($records){
 
         $count = 0;
