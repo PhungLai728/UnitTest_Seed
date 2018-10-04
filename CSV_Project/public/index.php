@@ -5,4 +5,20 @@
  * Date: 10/4/18
  * Time: 5:53 AM
  */
-echo 'test123abc';
+
+main::start();
+
+class main {
+
+    public static function start() {
+        $records = csv::getRecords();
+    }
+
+}
+
+class csv{}
+
+class html {}
+
+class system {}
+
