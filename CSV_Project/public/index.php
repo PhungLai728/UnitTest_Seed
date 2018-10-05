@@ -6,20 +6,28 @@
  * Time: 5:53 AM
  */
 
-main::start("SalesJan2009.csv");
+//main::start("SacramentoRealEstateTransactions.csv");
+main::start("example.csv");
+
 
 class main{
-    static public function start($filename) {
 
-        $records = csv::getRecords($filename);
+//    private $html;
+    public static function start($fileName)
+    {
+
+        $records = csv::getRecords($fileName);
         $table = html::generateTable($records);
+        system::printPage($table);
 
     }
 }
 
+
 class csv {
-    static public function getRecords($filename){
-        $file = fopen($filename,"r");
+
+    static public function getRecords($fileName){
+        $file = fopen($fileName,"r");
 
         $fieldNames = array();
 
@@ -60,7 +68,7 @@ class record {
     }
 
     public function createProperty($name = 'first', $value = 'keith') {
-        $this->{$name} = $value; //-> reference something
+        $this->{$name} = $value;
     }
 }
 
@@ -79,30 +87,54 @@ class html {
 
     public static function generateTable($records){
 
+        $body = '<html><head>';
+        $body .= '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">';
+        $body .= '<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>';;
+        $body .= '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>';
+        $body .= '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>';
+
+        $body .= '<tbody><table class="table table-striped table-bordered">';
+
         $count = 0;
         foreach ($records as $record) {
+
             if($count==0) {
                 $array = $record->returnArray();
                 $fields = array_keys($array);
-                $values =array_values($array);
-                print_r($fields);
-                print_r($values);
+                $values = array_values($array);
+
+                $body .= "<tr>";
+
+                foreach ($fields as $field) {
+                    $body .= "<th>" . htmlspecialchars($field) . "</th>";
+                }
+                $body .= "</tr>";
             } else {
                 $array = $record->returnArray();
                 $values =array_values($array);
-                print_r($values);
+//                print_r($values);
+
+                $body .= "<tr>";
+                foreach ($values as $value) {
+                    $body .= "<td>" . htmlspecialchars($value) . "</td>";
+                }
+                $body .= "</tr>";
+
             }
             $count++;
 
         }
+
+        $body .= "</table></tbody></head></html>";
+        return $body;
     }
 }
 
-//class system {
-//
-//    static public function printPage($page) {
-//
-//        echo $page;
-//    }
-//}
-//
+class system {
+
+    static public function printPage($page) {
+
+        echo $page;
+    }
+}
+
