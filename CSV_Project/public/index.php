@@ -27,6 +27,7 @@ class main{
 class csv {
 
     static public function getRecords($fileName){
+
         $file = fopen($fileName,"r");
 
         $fieldNames = array();
@@ -35,6 +36,7 @@ class csv {
 
         while(! feof($file))
         {
+
             $record = fgetcsv($file);
             if($count == 0) {
                 $fieldNames = $record;
@@ -42,9 +44,11 @@ class csv {
                 $records[] = recordFactory::create($fieldNames, $record); //make array
             }
             $count++;
+
         }
 
         fclose($file);
+
         return $records;
     }
 
@@ -56,6 +60,7 @@ class record {
     {
 
         $record = array_combine($fieldNames, $values);
+
         foreach ($record as $property => $value) {
             $this->createProperty($property, $value);
         }
@@ -63,12 +68,17 @@ class record {
     }
 
     public function returnArray() {
+
         $array = (array) $this;
+
         return $array;
+
     }
 
     public function createProperty($name = 'first', $value = 'keith') {
+
         $this->{$name} = $value;
+
     }
 }
 
@@ -93,7 +103,7 @@ class html {
         $body .= '<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>';
         $body .= '<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>';
 
-        $body .= '<tbody><table class="table table-striped table-bordered">';
+        $body .= '<body><table class="table table-striped table-bordered">';
 
         $count = 0;
         foreach ($records as $record) {
@@ -103,16 +113,27 @@ class html {
                 $fields = array_keys($array);
                 $values = array_values($array);
 
+
+//                heading::row($body,$fields);
                 $body .= "<tr>";
 
                 foreach ($fields as $field) {
                     $body .= "<th>" . htmlspecialchars($field) . "</th>";
                 }
                 $body .= "</tr>";
+
+                $body .= "<tr>";
+
+                foreach ($values as $value) {
+                    $body .= "<td>" . htmlspecialchars($value) . "</td>";
+                }
+                $body .= "</tr>";
+
+
             } else {
+
                 $array = $record->returnArray();
                 $values =array_values($array);
-//                print_r($values);
 
                 $body .= "<tr>";
                 foreach ($values as $value) {
@@ -121,13 +142,31 @@ class html {
                 $body .= "</tr>";
 
             }
+
             $count++;
 
         }
 
-        $body .= "</table></tbody></head></html>";
+        $body .= "</table></body></head></html>";
+
         return $body;
+
     }
+}
+
+class heading {
+
+//    static public function row(Array $line = null, Array $body = null) {
+
+    static public function row( $line, $body ) {
+        $body .= "<tr>";
+        foreach ($line as $word) {
+            $body .= "<td>" . htmlspecialchars($word) . "</td>";
+        }
+        $body .= "</tr>";
+
+    }
+
 }
 
 class system {
@@ -135,6 +174,7 @@ class system {
     static public function printPage($page) {
 
         echo $page;
+
     }
 }
 
