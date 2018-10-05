@@ -112,7 +112,6 @@ class html {
                 $fields = array_keys($array);
                 $values = array_values($array);
 
-
 //                heading::row($body,$fields);
                 $body .= "<tr>";
 
