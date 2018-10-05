@@ -12,7 +12,6 @@ main::start("example.csv");
 
 class main{
 
-//    private $html;
     public static function start($fileName)
     {
 
