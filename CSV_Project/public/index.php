@@ -9,11 +9,10 @@
 //main::start("SacramentoRealEstateTransactions.csv");
 main::start("example.csv");
 
-
+// Main: Read CSV file and print out
 class main{
 
-    public static function start($fileName)
-    {
+    static public function start($fileName) {
 
         $records = csv::getRecords($fileName);
         $table = html::generateTable($records);
@@ -22,10 +21,10 @@ class main{
     }
 }
 
-
+// csv: Read arbitrary CSV files
 class csv {
 
-    static public function getRecords($fileName){
+    static public function getRecords($fileName) {
 
         $file = fopen($fileName,"r");
 
@@ -53,10 +52,10 @@ class csv {
 
 }
 
+
 class record {
 
-    public function __construct(Array $fieldNames = null, $values =null)
-    {
+    public function __construct(Array $fieldNames = null, $values =null) {
 
         $record = array_combine($fieldNames, $values);
 
@@ -83,7 +82,7 @@ class record {
 
 class recordFactory {
 
-    public static function create(Array $fieldNames = null, Array $value = null) {
+    static public function create(Array $fieldNames = null, Array $value = null) {
 
         $record = new record($fieldNames, $value);
 
@@ -92,9 +91,10 @@ class recordFactory {
     }
 }
 
+// html: generate table from data in CSV file and print out
 class html {
 
-    public static function generateTable($records){
+    static public function generateTable($records) {
 
         $body = '<html><head>';
         $body .= '<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">';
@@ -105,39 +105,22 @@ class html {
         $body .= '<body><table class="table table-striped table-bordered">';
 
         $count = 0;
+
         foreach ($records as $record) {
 
             if($count==0) {
+
                 $array = $record->returnArray();
                 $fields = array_keys($array);
                 $values = array_values($array);
-
-//                heading::row($body,$fields);
-                $body .= "<tr>";
-
-                foreach ($fields as $field) {
-                    $body .= "<th>" . htmlspecialchars($field) . "</th>";
-                }
-                $body .= "</tr>";
-
-                $body .= "<tr>";
-
-                foreach ($values as $value) {
-                    $body .= "<td>" . htmlspecialchars($value) . "</td>";
-                }
-                $body .= "</tr>";
-
+                $body .= style::row($fields, "<th>",  "</th>");
+                $body .= style::row($values, "<td>", "</td>");
 
             } else {
 
                 $array = $record->returnArray();
                 $values =array_values($array);
-
-                $body .= "<tr>";
-                foreach ($values as $value) {
-                    $body .= "<td>" . htmlspecialchars($value) . "</td>";
-                }
-                $body .= "</tr>";
+                $body .= style::row($values, "<td>", "</td>");
 
             }
 
@@ -150,23 +133,10 @@ class html {
         return $body;
 
     }
-}
-
-class heading {
-
-//    static public function row(Array $line = null, Array $body = null) {
-
-    static public function row( $line, $body ) {
-        $body .= "<tr>";
-        foreach ($line as $word) {
-            $body .= "<td>" . htmlspecialchars($word) . "</td>";
-        }
-        $body .= "</tr>";
-
-    }
 
 }
 
+// system: print out a page
 class system {
 
     static public function printPage($page) {
@@ -174,5 +144,22 @@ class system {
         echo $page;
 
     }
+}
+
+class style {
+
+    static public function row($line, $style, $end_style) {
+
+        $body = '<html><head>';
+        $body .= "<tr>";
+        foreach ($line as $word) {
+            $body .= $style . htmlspecialchars($word) . $end_style;
+        }
+        $body .= "</tr>";
+
+        return $body;
+
+    }
+
 }
 
