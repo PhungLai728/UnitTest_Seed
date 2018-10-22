@@ -12,13 +12,23 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.index');
 });
 
-Auth::routes();
+Route::get('/about', function () {
+    return view('pages.about');
+});
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/contact', function () {
+    return view('pages.contact');
+});
 
-Route::get('/profile', 'HomeController@profile')->name('profile');
+Route::post('/contact', function () {
+    $data = request()->all();
+    echo "Thank you for your registration! " . "<strong>" . $data['name'] . '<br>' . "</strong>";
+//    echo "Name: " . $data['name'] . '<br>';
+    echo "Email: " . $data['email'] . '<br>';
+    echo "Contact: " . $data['body'];
 
 
+});
